@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Skill Branch</string>
+    <string name="_5">5</string>
+    <string name="rating">rating</string>
+    <string name="written_lines_of_code">written lines of code</string>
+    <string name="projects">projects</string>
 </resources>
