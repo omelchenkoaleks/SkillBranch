@@ -7,18 +7,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.omelchenkoaleks.skillbranch.R;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
+
+    //TODO: УДАЛИТЬ
+    private ImageView callImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+
+        callImageView = findViewById(R.id.call_img);
+        callImageView.setOnClickListener(this);
 
         if (savedInstanceState == null) {
         } else {
@@ -63,6 +70,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.call_img:
+                showProgress();
+                runWithDelay();
+                break;
+        }
     }
 
     @Override
