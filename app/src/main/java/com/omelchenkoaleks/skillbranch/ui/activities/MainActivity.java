@@ -3,6 +3,7 @@ package com.omelchenkoaleks.skillbranch.ui.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -12,37 +13,71 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.omelchenkoaleks.skillbranch.R;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
+
+    private int currentEditMode;
+
+    private FloatingActionButton fab;
     private CoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
     private DrawerLayout navigationDrawer;
 
-    //TODO: УДАЛИТЬ
-    private ImageView callImageView;
+    // все view пользовательские
+    private EditText userPhone;
+    private EditText userEmail;
+    private EditText userVk;
+    private EditText userGit;
+    private EditText userBio;
+
+    private List<View> userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
 
-        callImageView = findViewById(R.id.call_img);
-        callImageView.setOnClickListener(this);
+        userPhone = findViewById(R.id.phone_et);
+        userEmail = findViewById(R.id.email_et);
+        userVk = findViewById(R.id.vk_et);
+        userGit = findViewById(R.id.github_et);
+        userBio = findViewById(R.id.bio_et);
+
+        // создаем список, в который добавляем все наши View, чтобы дальше можно было
+        // работать с ними в цикле (добавлять в них данные, переключать в режим редактирования и так далее...)
+        userInfo = new ArrayList<>();
+        userInfo.add(userPhone);
+        userInfo.add(userEmail);
+        userInfo.add(userVk);
+        userInfo.add(userGit);
+        userInfo.add(userBio);
+
         coordinatorLayout = findViewById(R.id.main_coordinator_container);
         toolbar = findViewById(R.id.toolbar);
         navigationDrawer = findViewById(R.id.navigation_drawer);
 
+        fab = findViewById(R.id.fab_btn);
+        fab.setOnClickListener(this);
+
         setupToolbar();
         setupDrawer();
 
+
         if (savedInstanceState == null) {
         } else {
+            currentEditMode = savedInstanceState.getInt(ConstantManager.EDIT_MODE_KEY, 0);
+            changeEditMode(currentEditMode);
         }
     }
 
@@ -93,9 +128,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.call_img:
-                showProgress();
-                runWithDelay();
+            case R.id.fab_btn:
+                if (currentEditMode == 0) {
+                    changeEditMode(1);
+                    currentEditMode = 1;
+                } else {
+                    changeEditMode(0);
+                    currentEditMode = 0;
+                }
                 break;
         }
     }
@@ -103,7 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState");
+        outState.putInt(ConstantManager.EDIT_MODE_KEY, currentEditMode);
     }
 
     private void showSnackbar(String message) {
@@ -132,5 +172,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return false;
             }
         });
+    }
+
+    /**
+     * переключает режим редактирования
+     *
+     * @param mode 1 режим редактирования, если 0 режим просмотра
+     */
+    private void changeEditMode(int mode) {
+        if (mode == 1) {
+            fab.setImageResource(R.drawable.ic_done_black_24dp);
+            for (View userValue : userInfo) {
+                userValue.setEnabled(true);
+                userValue.setFocusable(true);
+                userValue.setFocusableInTouchMode(true);
+            }
+        } else {
+            fab.setImageResource(R.drawable.ic_mode_edit_black_24dp);
+            for (View userValue : userInfo) {
+                userValue.setEnabled(false);
+                userValue.setFocusable(false);
+                userValue.setFocusableInTouchMode(false);
+            }
+        }
+    }
+
+    // отвечает за загрузку пользательских данных
+    private void loadUserInfoValue() {
+
+    }
+
+    // отвечает за сохранение пользовательских данных
+    private void saveUserInfoValue() {
+
     }
 }

@@ -390,10 +390,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/my_tv"
+                            <EditText
+                                android:id="@+id/bio_et"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="О себе"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="textMultiLine"
                                 android:text="@string/my_text"
                                 android:textColor="@color/grey"
                                 android:textColorHint="@color/grey" />
@@ -414,6 +418,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mode_edit_black_24dp"
