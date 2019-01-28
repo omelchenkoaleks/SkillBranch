@@ -1,362 +1,370 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinator_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        tools:context=".ui.activities.MainActivity">
 
-        <LinearLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_large_72"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/grey"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:layout_marginBottom="@dimen/spacing_small_8"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/rating_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/_5"
-                    android:textColor="@color/grey_light"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/rating"
-                    android:textColor="@color/grey_light" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="@dimen/line_size"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:layout_marginBottom="@dimen/spacing_small_8"
-                android:background="@color/grey_light" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:layout_marginBottom="@dimen/spacing_small_8"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/written_code_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/_5"
-                    android:textColor="@color/grey_light"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/written_lines_of_code"
-                    android:textColor="@color/grey_light" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="@dimen/line_size"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:layout_marginBottom="@dimen/spacing_small_8"
-                android:background="@color/grey_light" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small_8"
-                android:layout_marginBottom="@dimen/spacing_small_8"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/projects_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/_5"
-                    android:textColor="@color/grey_light"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/projects"
-                    android:textColor="@color/grey_light" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small_8"
-            android:layout_marginBottom="@dimen/spacing_small_8"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/icon.left"
-                android:src="@drawable/ic_call_black_24dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/size_large_72"
-                android:layout_marginLeft="@dimen/spacing_medium_32"
-                android:layout_marginRight="@dimen/spacing_normal_16"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:background="@color/grey"
+                android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/phone_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="Мобильный телефон"
-                        android:inputType="phone"
-                        android:text="935298068"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/call_img"
-                style="@style/icon.right"
-                android:src="@drawable/ic_phone_in_talk_black_24dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:layout_marginLeft="@dimen/spacing_larger_72"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small_8"
-            android:layout_marginBottom="@dimen/spacing_small_8"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/icon.left"
-                android:src="@drawable/ic_email_black_24dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_large_72"
-                android:layout_marginLeft="@dimen/spacing_medium_32"
-                android:layout_marginRight="@dimen/spacing_normal_16"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/email_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:text="myMail"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <ImageView
-                style="@style/icon.right"
-                android:src="@drawable/ic_send_black_24dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:layout_marginLeft="@dimen/spacing_larger_72"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small_8"
-            android:layout_marginBottom="@dimen/spacing_small_8"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/icon.left"
-                android:src="@drawable/ic_people_black_24dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_large_72"
-                android:layout_marginLeft="@dimen/spacing_medium_32"
-                android:layout_marginRight="@dimen/spacing_normal_16"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/vk_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="Профиль в ВК"
-                        android:inputType="textEmailAddress"
-                        android:text="vk.com/omelchenkoaleks"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <ImageView
-                style="@style/icon.right"
-                android:src="@drawable/ic_pets_black_24dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:layout_marginLeft="@dimen/spacing_larger_72"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small_8"
-            android:layout_marginBottom="@dimen/spacing_small_8"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/icon.left"
-                android:src="@drawable/ic_business_center_black_24dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_large_72"
-                android:layout_marginLeft="@dimen/spacing_medium_32"
-                android:layout_marginRight="@dimen/spacing_normal_16"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/github_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="Репозиторий"
-                        android:inputType="textEmailAddress"
-                        android:text="github.com/omelchenkoaleks"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <ImageView
-                style="@style/icon.right"
-                android:src="@drawable/ic_pets_black_24dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:layout_marginLeft="@dimen/spacing_larger_72"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small_8"
-            android:layout_marginBottom="@dimen/spacing_small_8"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/icon.left"
-                android:src="@drawable/ic_person_outline_black_24dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_medium_32"
-                android:layout_marginRight="@dimen/spacing_normal_16"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/my_tv"
-                        android:layout_width="match_parent"
+                        android:id="@+id/rating_tv"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_text"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/_5"
+                        android:textColor="@color/grey_light"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/rating"
+                        android:textColor="@color/grey_light" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/line_size"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
+                    android:background="@color/grey_light" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/written_code_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/_5"
+                        android:textColor="@color/grey_light"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/written_lines_of_code"
+                        android:textColor="@color/grey_light" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/line_size"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
+                    android:background="@color/grey_light" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/projects_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/_5"
+                        android:textColor="@color/grey_light"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/projects"
+                        android:textColor="@color/grey_light" />
+                </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/icon.left"
+                    android:src="@drawable/ic_call_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_large_72"
+                    android:layout_marginLeft="@dimen/spacing_medium_32"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/phone_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Мобильный телефон"
+                            android:inputType="phone"
+                            android:text="935298068"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/call_img"
+                    style="@style/icon.right"
+                    android:src="@drawable/ic_phone_in_talk_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_size"
+                android:layout_marginLeft="@dimen/spacing_larger_72"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/icon.left"
+                    android:src="@drawable/ic_email_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_large_72"
+                    android:layout_marginLeft="@dimen/spacing_medium_32"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/email_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:text="myMail"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    style="@style/icon.right"
+                    android:src="@drawable/ic_send_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_size"
+                android:layout_marginLeft="@dimen/spacing_larger_72"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/icon.left"
+                    android:src="@drawable/ic_people_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_large_72"
+                    android:layout_marginLeft="@dimen/spacing_medium_32"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/vk_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Профиль в ВК"
+                            android:inputType="textEmailAddress"
+                            android:text="vk.com/omelchenkoaleks"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    style="@style/icon.right"
+                    android:src="@drawable/ic_pets_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_size"
+                android:layout_marginLeft="@dimen/spacing_larger_72"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/icon.left"
+                    android:src="@drawable/ic_business_center_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_large_72"
+                    android:layout_marginLeft="@dimen/spacing_medium_32"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/github_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Репозиторий"
+                            android:inputType="textEmailAddress"
+                            android:text="github.com/omelchenkoaleks"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    style="@style/icon.right"
+                    android:src="@drawable/ic_pets_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_size"
+                android:layout_marginLeft="@dimen/spacing_larger_72"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/icon.left"
+                    android:src="@drawable/ic_person_outline_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_medium_32"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/my_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_size"
+                android:layout_marginLeft="@dimen/spacing_larger_72"
+                android:background="@color/grey_light" />
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_size"
-            android:layout_marginLeft="@dimen/spacing_larger_72"
-            android:background="@color/grey_light" />
+    </android.support.v4.widget.NestedScrollView>
 
-    </LinearLayout>
-
-</android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,8 @@
 package com.omelchenkoaleks.skillbranch.ui.activities;
 
 import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
+    private CoordinatorLayout coordinatorLayout;
 
     //TODO: УДАЛИТЬ
     private ImageView callImageView;
@@ -26,6 +29,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         callImageView = findViewById(R.id.call_img);
         callImageView.setOnClickListener(this);
+        coordinatorLayout = findViewById(R.id.main_coordinator_container);
 
         if (savedInstanceState == null) {
         } else {
@@ -82,5 +86,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState");
+    }
+
+    private void showSnackbar(String message) {
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
 }
