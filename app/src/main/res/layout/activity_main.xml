@@ -14,6 +14,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_primary"
@@ -30,9 +31,9 @@
                     android:id="@+id/user_photo_img"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/profile_image_size"
+                    android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/oa"
-                    android:fitsSystemWindows="true"/>
+                    android:src="@drawable/oa" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -40,14 +41,13 @@
                     android:layout_height="?attr/actionBarSize"
                     android:theme="@style/AppTheme.PopupOverlay"
                     android:titleTextColor="@color/white"
-                    app:layout_collapseMode="pin"/>
+                    app:layout_collapseMode="pin" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -60,7 +60,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_large_72"
+                    android:layout_height="104dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@color/grey"
                     android:orientation="horizontal">
@@ -72,6 +72,7 @@
                         android:layout_marginTop="@dimen/spacing_small_8"
                         android:layout_marginBottom="@dimen/spacing_small_8"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
@@ -80,7 +81,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/_5"
-                            android:textColor="@color/grey_light"
+                            android:textColor="@color/white"
                             android:textSize="24sp" />
 
                         <TextView
@@ -88,14 +89,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/rating"
-                            android:textColor="@color/grey_light" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="@dimen/line_size"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/spacing_small_8"
-                        android:layout_marginBottom="@dimen/spacing_small_8"
+                        android:layout_marginTop="@dimen/spacing_normal_16"
+                        android:layout_marginBottom="@dimen/spacing_normal_16"
                         android:background="@color/grey_light" />
 
                     <LinearLayout
@@ -104,6 +105,7 @@
                         android:layout_marginTop="@dimen/spacing_small_8"
                         android:layout_marginBottom="@dimen/spacing_small_8"
                         android:layout_weight="2"
+                        android:layout_gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
@@ -112,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/_5"
-                            android:textColor="@color/grey_light"
+                            android:textColor="@color/white"
                             android:textSize="24sp" />
 
                         <TextView
@@ -120,14 +122,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/written_lines_of_code"
-                            android:textColor="@color/grey_light" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="@dimen/line_size"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/spacing_small_8"
-                        android:layout_marginBottom="@dimen/spacing_small_8"
+                        android:layout_marginTop="@dimen/spacing_normal_16"
+                        android:layout_marginBottom="@dimen/spacing_normal_16"
                         android:background="@color/grey_light" />
 
                     <LinearLayout
@@ -136,6 +138,7 @@
                         android:layout_marginTop="@dimen/spacing_small_8"
                         android:layout_marginBottom="@dimen/spacing_small_8"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
@@ -144,7 +147,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/_5"
-                            android:textColor="@color/grey_light"
+                            android:textColor="@color/white"
                             android:textSize="24sp" />
 
                         <TextView
@@ -152,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/projects"
-                            android:textColor="@color/grey_light" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -392,7 +395,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/my_text"
-                                android:textColor="@color/black"
+                                android:textColor="@color/grey"
                                 android:textColorHint="@color/grey" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -409,6 +412,14 @@
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mode_edit_black_24dp"
+            app:layout_anchor="@id/appbar_layout"
+            app:layout_anchorGravity="bottom|right"
+            android:layout_marginRight="@dimen/fab_right_space"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
