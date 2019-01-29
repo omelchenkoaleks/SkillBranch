@@ -1,7 +1,9 @@
 package com.omelchenkoaleks.skillbranch.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -181,6 +183,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    /**
+     * Получение результата из другой Activity (фото из камеры или галереи)
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     // при нажатии на системную кнопку back, закрывает NavigationDrawer:
     @Override
     public void onBackPressed() {
@@ -230,5 +243,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             userData.add(userFieldView.getText().toString());
         }
         dataManager.getPreferenceManager().saveUserProfileData(userData);
+    }
+
+    // метод для загрузки изображений из Галереи
+    private void loadPhotoFromGallery() {
+
+    }
+
+    // метод для загрузки изображений с Камеры
+    private void loadPhotoFromCamera() {
+
     }
 }
