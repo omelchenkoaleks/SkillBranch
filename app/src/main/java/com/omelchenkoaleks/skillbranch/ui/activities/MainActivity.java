@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-        loadUserInfoValue();
+        saveUserInfoValue();
     }
 
     @Override
@@ -179,6 +179,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return false;
             }
         });
+    }
+
+    // при нажатии на системную кнопку back, закрывает NavigationDrawer:
+    @Override
+    public void onBackPressed() {
+        if (navigationDrawer.isDrawerOpen(GravityCompat.START)) {
+            navigationDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
