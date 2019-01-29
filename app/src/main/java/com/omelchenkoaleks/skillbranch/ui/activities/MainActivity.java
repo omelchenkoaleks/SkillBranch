@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.omelchenkoaleks.skillbranch.R;
+import com.omelchenkoaleks.skillbranch.data.managers.DataManager;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
 
-    private int currentEditMode;
+    private DataManager dataManager;
+    private int currentEditMode = 0;
 
     private FloatingActionButton fab;
     private CoordinatorLayout coordinatorLayout;
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private EditText userGit;
     private EditText userBio;
 
-    private List<View> userInfo;
+    private List<EditText> userInfoViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+
+        dataManager = DataManager.getInstance();
 
         userPhone = findViewById(R.id.phone_et);
         userEmail = findViewById(R.id.email_et);
@@ -56,12 +59,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // создаем список, в который добавляем все наши View, чтобы дальше можно было
         // работать с ними в цикле (добавлять в них данные, переключать в режим редактирования и так далее...)
-        userInfo = new ArrayList<>();
-        userInfo.add(userPhone);
-        userInfo.add(userEmail);
-        userInfo.add(userVk);
-        userInfo.add(userGit);
-        userInfo.add(userBio);
+        userInfoViews = new ArrayList<>();
+        userInfoViews.add(userPhone);
+        userInfoViews.add(userEmail);
+        userInfoViews.add(userVk);
+        userInfoViews.add(userGit);
+        userInfoViews.add(userBio);
 
         coordinatorLayout = findViewById(R.id.main_coordinator_container);
         toolbar = findViewById(R.id.toolbar);
@@ -72,10 +75,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setupToolbar();
         setupDrawer();
+        loadUserInfoValue();
 
+//        List<String> test = dataManager.getPreferenceManager().loadUserProfileData();
 
         if (savedInstanceState == null) {
         } else {
+            // при редактировании сохраняем данные, если вдруг будет перевернут экран устройства:
             currentEditMode = savedInstanceState.getInt(ConstantManager.EDIT_MODE_KEY, 0);
             changeEditMode(currentEditMode);
         }
@@ -105,6 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        loadUserInfoValue();
     }
 
     @Override
@@ -182,28 +189,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void changeEditMode(int mode) {
         if (mode == 1) {
             fab.setImageResource(R.drawable.ic_done_black_24dp);
-            for (View userValue : userInfo) {
+            for (EditText userValue : userInfoViews) {
                 userValue.setEnabled(true);
                 userValue.setFocusable(true);
                 userValue.setFocusableInTouchMode(true);
             }
         } else {
             fab.setImageResource(R.drawable.ic_mode_edit_black_24dp);
-            for (View userValue : userInfo) {
+            for (EditText userValue : userInfoViews) {
                 userValue.setEnabled(false);
                 userValue.setFocusable(false);
                 userValue.setFocusableInTouchMode(false);
+                saveUserInfoValue();
             }
         }
     }
 
     // отвечает за загрузку пользательских данных
     private void loadUserInfoValue() {
-
+        List<String> userData = dataManager.getPreferenceManager().loadUserProfileData();
+        for (int i = 0; i < userData.size(); i++) {
+            userInfoViews.get(i).setText(userData.get(i));
+        }
     }
 
     // отвечает за сохранение пользовательских данных
     private void saveUserInfoValue() {
-
+        List<String> userData = new ArrayList<>();
+        for (EditText userFieldView : userInfoViews) {
+            userData.add(userFieldView.getText().toString());
+        }
+        dataManager.getPreferenceManager().saveUserProfileData(userData);
     }
 }
