@@ -1,6 +1,7 @@
 package com.omelchenkoaleks.skillbranch.data.managers;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 import com.omelchenkoaleks.skillbranch.utils.SkillbranchApplication;
@@ -44,5 +45,19 @@ public class PreferenceManager {
         userFields.add(sharedPreferences.getString(ConstantManager.USER_GIT_KEY, "null"));
         userFields.add(sharedPreferences.getString(ConstantManager.USER_BIO_KEY, "null"));
         return userFields;
+    }
+
+    // нужно сохранить ссылку на изображение, чтобы при запуске оно подгружалось
+    public void saveUserPhoto(Uri uri) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ConstantManager.USER_PHOTO_KEY, uri.toString());
+        editor.apply();
+    }
+
+    //чтобы мы могли извлечь uri нашего сохраненного изображения
+    public Uri loadUserPhoto() {
+        return Uri.parse(sharedPreferences
+                .getString(ConstantManager.USER_PHOTO_KEY,
+                        "android.resource://com.omelchenkoaleks.skillbranch/drawable/oa"));
     }
 }

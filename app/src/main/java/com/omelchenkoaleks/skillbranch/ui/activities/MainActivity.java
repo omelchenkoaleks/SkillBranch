@@ -1,14 +1,17 @@
 package com.omelchenkoaleks.skillbranch.ui.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -17,6 +20,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -25,11 +30,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.omelchenkoaleks.skillbranch.R;
 import com.omelchenkoaleks.skillbranch.data.managers.DataManager;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +70,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private AppBarLayout.LayoutParams appBarParams = null;
     private File photoFile = null;
-    private Uri selectedIgage = null;
+    private Uri selectedImage = null;
+    private ImageView photoFileImage = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         userInfoViews.add(userGit);
         userInfoViews.add(userBio);
 
+        photoFileImage = findViewById(R.id.user_photo_img);
         appBarLayout = findViewById(R.id.appbar_layout);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         coordinatorLayout = findViewById(R.id.main_coordinator_container);
@@ -103,6 +112,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setupToolbar();
         setupDrawer();
         loadUserInfoValue();
+
+        // подгржаем изображение, сохраненное в SharedPreferences
+        Picasso.with(this)
+                .load(dataManager.getPreferenceManager().loadUserPhoto())
+                .into(photoFileImage);
 
 //        List<String> test = dataManager.getPreferenceManager().loadUserProfileData();
 
@@ -223,7 +237,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        // разруливаем выбор Галерея или Камера:
+        switch (requestCode) {
+            case ConstantManager.REQUEST_GALLERY_PICTURE:
+                if (resultCode == RESULT_OK && data != null) {
+                    selectedImage = data.getData();
+
+                    insertProfileImage(selectedImage);
+                }
+                break;
+            case ConstantManager.REQUEST_CAMERA_PICTURE:
+                if (resultCode == RESULT_OK && photoFile != null) {
+                    selectedImage = Uri.fromFile(photoFile);
+
+                    insertProfileImage(selectedImage);
+                }
+        }
+    }
+
+    // вставляет наше изображение (выбранное) в наш Toolbar:
+    private void insertProfileImage(Uri selectedImage) {
+        Picasso.with(this)
+                .load(selectedImage)
+                .into(photoFileImage);
+        dataManager.getPreferenceManager().saveUserPhoto(selectedImage);
     }
 
     // при нажатии на системную кнопку back, закрывает NavigationDrawer:
@@ -302,22 +339,58 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     // метод для загрузки изображений с Камеры
     private void loadPhotoFromCamera() {
-        File photoFile = null;
+        // оборачиваем загрузку в проверку разрешений
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
 
-        Intent takeCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Intent takeCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // получаем нашу фотографию из камеры:
-        try {
-            photoFile = createImageFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: обработать ошибку
+            // получаем нашу фотографию из камеры:
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // TODO: обработать ошибку
+            }
+
+            if (photoFile != null) {
+                // TODO: передать фото в интент
+                takeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(takeCaptureIntent, ConstantManager.REQUEST_CAMERA_PICTURE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            }, ConstantManager.CAMERA_REQUEST_PERMISSION_CODE);
+
+            // важная подстраховка, если пользователь поставил галочку не показывать
+            // мне больше это диалоговое окно:
+            Snackbar.make(coordinatorLayout,
+                    "Для корректной работы приложения необходимо дать требуемые разрешения",
+                    Snackbar.LENGTH_LONG).setAction("Разрешить", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openApplicationSettings();
+                }
+            }).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == ConstantManager.CAMERA_REQUEST_PERMISSION_CODE && grantResults.length == 2) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // TODO: тут обрабатываем разрешение (разрешение получено)
+                // например вывести сообщение или обработать какой-то логикой если нужно
+            }
         }
 
-        if (photoFile != null) {
-            // TODO: передать фото в интент
-            takeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-            startActivityForResult(takeCaptureIntent, ConstantManager.REQUEST_CAMERA_PICTURE);
+        if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            // TODO: тут обрабатываем разрешение (разрешение получено)
+            // например вывести сообщение или обработать какой-то логикой если нужно
         }
     }
 
@@ -363,17 +436,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case 0:
                                 // TODO: загрузить из галереи
                                 loadPhotoFromGallery();
-                                showSnackbar("загрузить из галереи");
+//                                showSnackbar("загрузить из галереи");
                                 break;
                             case 1:
                                 // TODO: загрузить из камеры
                                 loadPhotoFromCamera();
-                                showSnackbar("загрузить из камеры");
+//                                showSnackbar("загрузить из камеры");
                                 break;
                             case 2:
                                 // TODO: отменить загрузку
                                 dialog.cancel();
-                                showSnackbar("отменить загрузку");
+//                                showSnackbar("отменить загрузку");
                                 break;
                         }
                     }
@@ -394,11 +467,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         String imageFileName = "JPEG_" + timeStamp + "_";
 
         // определяем путь к тому месту, где будет сохраняться наш файл:
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
         // теперь создаем сам имейджфайл: указываем имя, тип, место (где будет лежать)
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         return image;
+    }
+
+    // здесь обрабатываем наши Runtime Permission,
+    // чтобы была возможность отправить нашего пользователя на страничку настроек
+    public void openApplicationSettings() {
+        // по этому Интенту мы вызовем настройки нашего приложения:
+        Intent appSettingsIntent = new Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:" + getPackageName()));
+        startActivityForResult(appSettingsIntent, ConstantManager.PERMISSION_REQUEST_SETTINGS_CODE);
     }
 }

@@ -12,7 +12,7 @@
     <com.github.siyamed.shapeimageview.CircularImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/oa"
+        android:background="@color/color_accent"
         app:siRadius="2dp"
         android:layout_marginTop="@dimen/spacing_normal_16"
         app:siBorderWidth="2dp"
