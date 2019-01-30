@@ -1,9 +1,14 @@
 package com.omelchenkoaleks.skillbranch.ui.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.omelchenkoaleks.skillbranch.R;
 import com.omelchenkoaleks.skillbranch.data.managers.DataManager;
@@ -30,6 +36,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DataManager dataManager;
     private int currentEditMode = 0;
 
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private RelativeLayout profilePlaceholder;
     private FloatingActionButton fab;
     private CoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
@@ -43,6 +52,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private EditText userBio;
 
     private List<EditText> userInfoViews;
+
+    private AppBarLayout.LayoutParams appBarParams = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +79,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         userInfoViews.add(userGit);
         userInfoViews.add(userBio);
 
+        appBarLayout = findViewById(R.id.appbar_layout);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         coordinatorLayout = findViewById(R.id.main_coordinator_container);
         toolbar = findViewById(R.id.toolbar);
         navigationDrawer = findViewById(R.id.navigation_drawer);
-
+        profilePlaceholder = findViewById(R.id.profile_placeholder);
         fab = findViewById(R.id.fab_btn);
+
+        profilePlaceholder.setOnClickListener(this);
         fab.setOnClickListener(this);
 
         setupToolbar();
@@ -146,6 +161,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     currentEditMode = 0;
                 }
                 break;
+            case R.id.profile_placeholder:
+                // TODO: сделать выбор откуда загружать фото
+                showDialog(ConstantManager.LOAD_PROFILE_PHOTO);
+                break;
         }
     }
 
@@ -163,6 +182,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+
+        appBarParams = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -185,6 +206,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * Получение результата из другой Activity (фото из камеры или галереи)
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -216,6 +238,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 userValue.setEnabled(true);
                 userValue.setFocusable(true);
                 userValue.setFocusableInTouchMode(true);
+
+                showProfilePlaceholder();
+                lockToolbar();
             }
         } else {
             fab.setImageResource(R.drawable.ic_mode_edit_black_24dp);
@@ -223,6 +248,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 userValue.setEnabled(false);
                 userValue.setFocusable(false);
                 userValue.setFocusableInTouchMode(false);
+
+                hideProfilePlaceholder();
+                unlockToolbar();
+
                 saveUserInfoValue();
             }
         }
@@ -253,5 +282,69 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     // метод для загрузки изображений с Камеры
     private void loadPhotoFromCamera() {
 
+    }
+
+    // скрывает панель действия выбора фотографии
+    private void hideProfilePlaceholder() {
+        profilePlaceholder.setVisibility(View.GONE);
+    }
+
+    // показывает панель действия выбора фотографии
+    private void showProfilePlaceholder() {
+        profilePlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    // блокируем скрывание (scroll) во время редактирвоания
+    private void lockToolbar() {
+        appBarLayout.setExpanded(true, true);
+        appBarParams.setScrollFlags(0);
+        collapsingToolbarLayout.setLayoutParams(appBarParams);
+    }
+
+    // разблокируем scroll после редактирования
+    private void unlockToolbar() {
+        appBarParams.setScrollFlags(
+                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        collapsingToolbarLayout.setLayoutParams(appBarParams);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case ConstantManager.LOAD_PROFILE_PHOTO:
+                String[] selectItems = {
+                        getString(R.string.user_profile_dialog_gallery),
+                        getString(R.string.user_profile_dialog_camera),
+                        getString(R.string.user_profile_dialog_cancel)};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.user_profile_dialog_title));
+                builder.setItems(selectItems, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int choiceItem) {
+                        switch (choiceItem) {
+                            case 0:
+                                // TODO: загрузить из галереи
+                                loadPhotoFromGallery();
+                                showSnackbar("загрузить из галереи");
+                                break;
+                            case 1:
+                                // TODO: загрузить из камеры
+                                loadPhotoFromCamera();
+                                showSnackbar("загрузить из камеры");
+                                break;
+                            case 2:
+                                // TODO: отменить загрузку
+                                dialog.cancel();
+                                showSnackbar("отменить загрузку");
+                                break;
+                        }
+                    }
+                });
+                return builder.create();
+
+            default:
+                return null;
+        }
     }
 }

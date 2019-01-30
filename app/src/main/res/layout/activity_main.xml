@@ -40,9 +40,11 @@
                         android:src="@drawable/oa" />
 
                     <RelativeLayout
+                        android:id="@+id/profile_placeholder"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/grey_background">
+                        android:background="@color/grey_background"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
