@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -241,6 +242,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 showProfilePlaceholder();
                 lockToolbar();
+                // делаем невидимым наш текст ФИО
+                collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
             }
         } else {
             fab.setImageResource(R.drawable.ic_mode_edit_black_24dp);
@@ -251,6 +254,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 hideProfilePlaceholder();
                 unlockToolbar();
+                // делаем цвет текста вновь видимым (ФИО)
+                collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.white));
 
                 saveUserInfoValue();
             }
