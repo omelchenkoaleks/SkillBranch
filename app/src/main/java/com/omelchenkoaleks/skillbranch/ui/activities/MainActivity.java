@@ -5,7 +5,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -28,7 +31,11 @@ import com.omelchenkoaleks.skillbranch.R;
 import com.omelchenkoaleks.skillbranch.data.managers.DataManager;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -55,6 +62,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List<EditText> userInfoViews;
 
     private AppBarLayout.LayoutParams appBarParams = null;
+    private File photoFile = null;
+    private Uri selectedIgage = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,12 +290,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     // метод для загрузки изображений из Галереи
     private void loadPhotoFromGallery() {
+        Intent takeGalleryIntent = new Intent(
+                Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+        takeGalleryIntent.setType("image/*");
+
+        startActivityForResult(Intent.createChooser(takeGalleryIntent,
+                getString(R.string.user_profile_chose_message)),
+                ConstantManager.REQUEST_GALLERY_PICTURE);
     }
 
     // метод для загрузки изображений с Камеры
     private void loadPhotoFromCamera() {
+        File photoFile = null;
 
+        Intent takeCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // получаем нашу фотографию из камеры:
+        try {
+            photoFile = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // TODO: обработать ошибку
+        }
+
+        if (photoFile != null) {
+            // TODO: передать фото в интент
+            takeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            startActivityForResult(takeCaptureIntent, ConstantManager.REQUEST_CAMERA_PICTURE);
+        }
     }
 
     // скрывает панель действия выбора фотографии
@@ -351,5 +383,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             default:
                 return null;
         }
+    }
+
+    // метод в котором создается файл для записи фото с нашей камеры
+    private File createImageFile() throws IOException {
+        // нужно уникальное имя для отпечатывания времени, когда была сделана фотография:
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        // нужно название нашего файла:
+        String imageFileName = "JPEG_" + timeStamp + "_";
+
+        // определяем путь к тому месту, где будет сохраняться наш файл:
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        // теперь создаем сам имейджфайл: указываем имя, тип, место (где будет лежать)
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+        return image;
     }
 }
