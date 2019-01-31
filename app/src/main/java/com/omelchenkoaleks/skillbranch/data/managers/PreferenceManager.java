@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.omelchenkoaleks.skillbranch.utils.ConstantManager;
 import com.omelchenkoaleks.skillbranch.utils.SkillbranchApplication;
 
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,5 +60,29 @@ public class PreferenceManager {
         return Uri.parse(sharedPreferences
                 .getString(ConstantManager.USER_PHOTO_KEY,
                         "android.resource://com.omelchenkoaleks.skillbranch/drawable/oa"));
+    }
+
+    // этот метод нужен, чтобы подписывать наши исходящие запросы, чтобы сервер
+    // был убежден, что это приходят запросы от какого-то авторизованного пользователя
+    public void saveAuthToken(String authToken) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ConstantManager.AUTH_TOKEN_KEY, authToken);
+        editor.apply();
+    }
+
+    // метод для получения нашего токена
+    public String getAuthToken() {
+        return sharedPreferences.getString(ConstantManager.AUTH_TOKEN_KEY, "null");
+    }
+
+    // сохраняем идентификатор пользователя
+    public void saveUserId(String userId) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ConstantManager.USER_ID_KEY, userId);
+        editor.apply();
+    }
+
+    public String getUserId() {
+        return sharedPreferences.getString(ConstantManager.USER_ID_KEY, "null");
     }
 }
