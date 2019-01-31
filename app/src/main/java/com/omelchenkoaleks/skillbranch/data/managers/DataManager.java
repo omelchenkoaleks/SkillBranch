@@ -1,6 +1,14 @@
 package com.omelchenkoaleks.skillbranch.data.managers;
 
+import android.content.Context;
+
+import com.omelchenkoaleks.skillbranch.data.network.RestService;
+import com.omelchenkoaleks.skillbranch.data.network.ServiceGenerator;
+import com.omelchenkoaleks.skillbranch.data.network.req.UserLoginReq;
+import com.omelchenkoaleks.skillbranch.data.network.res.UserModelRes;
 import com.omelchenkoaleks.skillbranch.utils.SkillbranchApplication;
+
+import retrofit2.Call;
 
 /**
  * Содержит единную точку общения с данными. Он нужен для того, чтобы
@@ -12,10 +20,14 @@ import com.omelchenkoaleks.skillbranch.utils.SkillbranchApplication;
 public class DataManager {
     private static DataManager INSTANCE = null;
 
+    private Context context;
     private PreferenceManager preferenceManager;
+    private RestService restService;
 
     public DataManager() {
         this.preferenceManager = new PreferenceManager();
+        this.context = SkillbranchApplication.getContext();
+        this.restService = ServiceGenerator.createService(RestService.class);
     }
 
     public static DataManager getInstance() {
@@ -27,5 +39,13 @@ public class DataManager {
 
     public PreferenceManager getPreferenceManager() {
         return preferenceManager;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public Call<UserModelRes> loginUser(UserLoginReq userLoginReq){
+        return restService.loginUser(userLoginReq);
     }
 }
