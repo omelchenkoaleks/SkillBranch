@@ -3,6 +3,7 @@ package com.omelchenkoaleks.skillbranch.ui.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -116,6 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // подгржаем изображение, сохраненное в SharedPreferences
         Picasso.with(this)
                 .load(dataManager.getPreferenceManager().loadUserPhoto())
+                .placeholder(R.drawable.oa)// TODO: сделать плейсхолдер и transform + crop
                 .into(photoFileImage);
 
 //        List<String> test = dataManager.getPreferenceManager().loadUserProfileData();
@@ -260,6 +262,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Picasso.with(this)
                 .load(selectedImage)
                 .into(photoFileImage);
+                // TODO: сделать плейсхолдер и transform + crop
         dataManager.getPreferenceManager().saveUserPhoto(selectedImage);
     }
 
@@ -472,6 +475,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // теперь создаем сам имейджфайл: указываем имя, тип, место (где будет лежать)
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+        // чтобы наша фотография появилась в Галерее
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, image.getAbsolutePath());
+
+        this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         return image;
     }
